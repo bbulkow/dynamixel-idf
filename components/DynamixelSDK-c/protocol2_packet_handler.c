@@ -520,9 +520,7 @@ void txRxPacket2(int port_num)
   rxPacket2(port_num);
   // check txpacket ID == rxpacket ID
   if (packetData[port_num].tx_packet[PKT_ID] != packetData[port_num].rx_packet[PKT_ID]) {
-    printf(" packet ID not correct: trying again? wtf? commResult: %d\n", packetData[port_num].communication_result);
-
-    vTaskDelay(1000000);
+    //printf(" packet ID not correct: trying again? wtf? commResult: %d\n", packetData[port_num].communication_result);
 
     rxPacket2(port_num);
   }
@@ -702,14 +700,14 @@ void action2(int port_num, uint8_t id)
 
 void reboot2(int port_num, uint8_t id)
 {
-  printf(" reboot2\n ");
+  //printf(" reboot2\n ");
 
   packetData[port_num].tx_packet[PKT_ID] = id;
   packetData[port_num].tx_packet[PKT_LENGTH_L] = 3;
   packetData[port_num].tx_packet[PKT_LENGTH_H] = 0;
   packetData[port_num].tx_packet[PKT_INSTRUCTION] = INST_REBOOT;
 
-  printf("txRxPacket2 entry\n");
+  //printf("txRxPacket2 entry\n");
 
   txRxPacket2(port_num);
 }
