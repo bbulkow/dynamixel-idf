@@ -375,23 +375,38 @@ int servo_init(int port_num, int id) {
   uint8_t dxl_error = 0;    
   int dxl_comm_result = COMM_TX_FAIL;    
 
-  printf("servo init: ID %d\n",id);
+  printf("servo init: reboot: ID %d\n",id);
 
   sleep_usecs(10000);
 
-  reboot(port_num, PROTOCOL_VERSION,id);
+  bool reboot_success = false;
 
-  if ((dxl_comm_result = getLastTxRxResult(port_num, PROTOCOL_VERSION)) != COMM_SUCCESS) {
-      printf("reboot comm id %d failed: %s\n",id, getTxRxResult(PROTOCOL_VERSION, dxl_comm_result));
-      return(-1);
-  }
-  else if ((dxl_error = getLastRxPacketError(port_num, PROTOCOL_VERSION)) != 0)
-  {
-      printf("reboot Error: id %d %s\n", id,getRxPacketError(PROTOCOL_VERSION, dxl_error));
-      return(-1);
+  for (int i=0; i<3; i++) {
+
+    reboot(port_num, PROTOCOL_VERSION,id);
+
+    if ((dxl_comm_result = getLastTxRxResult(port_num, PROTOCOL_VERSION)) != COMM_SUCCESS) {
+        printf("reboot comm id %d failed: %s\n",id, getTxRxResult(PROTOCOL_VERSION, dxl_comm_result));
+        //return(-1);
+    }
+    else if ((dxl_error = getLastRxPacketError(port_num, PROTOCOL_VERSION)) != 0)
+    {
+        printf("reboot Error: id %d %s\n", id,getRxPacketError(PROTOCOL_VERSION, dxl_error));
+        //return(-1);
+    }
+    else {
+      reboot_success = true;
+      sleep_usecs(150000);
+      break;
+    }
+
+    sleep_usecs(150000);
+
   }
 
-  sleep_usecs(150000);
+  if (reboot_success == false) {
+    return(-1);
+  }
 
   printf("Enable torque\n");
   if (0 != set_torque_mode(port_num,id, true)) {
