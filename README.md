@@ -24,3 +24,12 @@ The pins are configured in:
 ```
 dynamixel-idf/components/DynamixelSDK-c/include/port_handler_esp_idf.h
 ```
+## Hey! What kind of chips are you using, and what data rates are you getting?
+
+The goal is fast response time. We have to level-shift between 5v and 3.3v quickly, experimentation shows the
+Adafruit implementation of the BSS138 to be sufficient for 4Mhz transport. https://www.adafruit.com/product/757 - note that
+in this implementation, the "OE" output enable must be left to float.
+
+For the 486 converter, we are using the TI 486 chip: https://www.ti.com/lit/ds/symlink/sn65hvd485e.pdf
+
+The more expensive TI chip - https://www.ti.com/lit/ds/symlink/sn75lbc176.pdf - did not function, so we simply swapped it out.
