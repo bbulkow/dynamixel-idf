@@ -1,0 +1,27 @@
+# put here your custom config value
+menu "Dynamixel Servos"
+config DYNAMIXEL_IDS
+    string "IDs - comma separated"
+    default "1,2"
+    help
+	A comma separated list of the IDs you expect on this port
+
+config DYNAMIXEL_UART_PORT
+    string "UART port"
+    default "TBD"
+    help
+	Not sure what these might be and what the representation is
+
+config DYNAMIXEL_UART_PORT
+    string "Servo Model"
+    default "XM540"
+    help
+	Right now we only support one type but we'll hope to support more, and a mix
+
+config DYNAMIXEL_UART_BAUD
+    string "UART BAUD"
+    default "3000000"
+    help
+	The baud rate that should be used with all servos
+
+endmenu
